@@ -1,6 +1,7 @@
 import os
 import glob
 import argparse
+import time
 
 # Kerasa / TensorFlow
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '5'
@@ -31,10 +32,13 @@ inputs = load_images( glob.glob(args.input) )
 print('\nLoaded ({0}) images of size {1}.'.format(inputs.shape[0], inputs.shape[1:]))
 
 # Compute results
+t = time.time()
 outputs = predict(model, inputs)
+print('Predictions Done (%.2fs)' % (time.time() - t))
 
 # Display results
 viz = display_images(outputs.copy(), inputs.copy())
-plt.figure(figsize=(10,5))
+fig = plt.figure(figsize=(10,5))
 plt.imshow(viz)
 plt.show()
+fig.savefig('results.png', dpi=300)
